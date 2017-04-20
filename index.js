@@ -39,6 +39,11 @@ app.get('/passreset',function (req,res) {
 	res.sendFile(path.join(__dirname+'/public/passrest.html'))	;
 });
 
+app.get('/logout',function (req,res) {
+	firebase.auth().signOut();
+	res.sendFile(path.join(__dirname+'/public/signin.html'))	;
+});
+
 app.get('/idea',function (req,res) {
 	firebase.auth().onAuthStateChanged(function(user) {
   if (user) {
@@ -56,7 +61,6 @@ app.get('/idea',function (req,res) {
 app.post('/processsignup',function (req,res) {
 	var nam = req.body.name;
 	var phone = req.body.phone;
-	var imageUrl = req.body.img;
 	var email = req.body.email;
 	var password = req.body.password;
 	firebase.auth().createUserWithEmailAndPassword(email, password)
@@ -65,22 +69,18 @@ app.post('/processsignup',function (req,res) {
 	var data = 
 	{
 		    username: nam,
-		    //profile_picture : imageUrl,
 		    phone : phone
   		};
-		  	firebase.database().ref('user/'+userId ).set(data).
-		  	catch(function(error) {
-		  		 console.log(error.code);
-		  	}); 
-		
-		// console.log(userData);
-		//res.send(userId);
+		  	firebase.database().ref('user/'+userId ).set(data);
+		  	res.send(email);			
+
 	})
 	.catch(function(error) {
 		  var errorCode = error.code;
 		  var errorMessage = error.message;
 		  console.log(error.code);
-		  res.send(errorCode + "  <a href='/'>Go Back</a>");			
+		  //res.send(errorCode + "  <a href='/'>Go Back</a>");			
+		  res.send(errorMessage);			
 	});
 		
 });
@@ -112,7 +112,13 @@ app.post('/resetpass',function (req,res) {
 	var auth = firebase.auth();
 	auth.sendPasswordResetEmail(email).then(function() {
 		}, function(error) {
-		});
+		}).
+		catch(function(error) {
+		  var errorCode = error.code;
+		  var errorMessage = error.message;
+		  res.send(errorCode);
+		  
+});
 	
 });
 

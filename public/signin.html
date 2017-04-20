@@ -47,8 +47,9 @@
 			   $("#err").html("Password or Email empty !!!");
 		  }
           else{
-              alert ("Login Successful")
-            window.location = 'idea'
+              alert ("Login Successful");
+              window.localStorage.setItem('userid', r);
+            window.location = 'idea';
           }
         } );
 
