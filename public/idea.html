@@ -13,6 +13,7 @@
   <script src="/js/jquery-ui.js"></script>
   <script type="text/javascript">
   $(document).ready(function() {
+    
 	  $(function() {
             $( "#formdialog" ).dialog({
                autoOpen: false,
@@ -25,8 +26,17 @@
                $( "#formdialog" ).dialog( "open" );
             });
          });
+    //getting userdata
+      $.post('/getuser',{},function(res){
+        //alert(res);
+        document.getElementById('userd').innerHTML += res;
+
+      });
+
+    //getting userdata
     
 });
+
   </script>
 </head>
 <body style="background-image:url(/images/bgimg.jpg); background-size:cover; background-repeat:no-repeat;">
@@ -96,12 +106,13 @@
       var title = $("#title").val();
       var category = $("#category").val();
 	    var description = $("#description").val();
-      var userToken = $("#usertoken").val();  
-        $.post('/addidea/',{title:title,category:category,description:description,usertoken:userToken}, function(r){
+      var userToken = $("#usertoken").val(); 
+      var time = new Date();  
+        $.post('/addidea/',{title:title,category:category,description:description,usertoken:userToken, time:time}, function(r){
 			
           alert(r);
           
-        } );
+        });
 		
 		$("#formdialog").dialog('close');
 
@@ -134,6 +145,13 @@
 	});
   
 //validating idea dialog box
+
+//getting ideas
+
+
+//getting ideas
+
+
 
 </script>
 </body>

@@ -4,7 +4,16 @@ var path = require('path');
 var firebase = require("firebase");
 var fs = require('fs');
 var markdown = require('markdown').markdown;
+var admin = require("firebase-admin");
+var bodyParser = require('body-parser');
+var admin = require("firebase-admin");
 
+var serviceAccount = require("sdk/serviceAccountKey.json");
+
+admin.initializeApp({
+  credential: admin.credential.cert(serviceAccount),
+  databaseURL: "https://ideaboxaa.firebaseio.com"
+});
 
 	var config = {
     apiKey: "AIzaSyBCyb7h4HYMrrJsJuB5ElQPBjSEDtkZAXY",
@@ -15,12 +24,14 @@ var markdown = require('markdown').markdown;
     messagingSenderId: "536995907101"
   };
 firebase.initializeApp(config);
+
 var database = firebase.database();
+
 
 
 app.use(express.static('public'));
 
-var bodyParser = require('body-parser');
+
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true }));
 
@@ -136,8 +147,44 @@ app.post('/addidea/',function (req,res) {
 	var category = req.body.category;
 	var description = req.body.description;
 	var userToken = req.body.usertoken;
-	res.send( title + category + description + userToken);
+	var time = req.body.time;
+	var data = 
+	{		userid: userToken,
+		    title: title,
+		    category : category,
+		    description: description,
+		    upvote: 0,
+		    downvote: 0,
+		    date: time,
+		    comment : {
+		    	commentid:0,
+		    	comment:0,
+		    }
+  		};
+		  	//firebase.database().ref('user/'+userId ).set(data);
+		  	//var postsRef = firebase.database().ref.child("user/ideas");
+		  	//postsRef.push().set(data)
+		  	firebase.database().ref('ideas/').push().set(data)
+		  	.then(userData => { 
+				res.send("Added");
+			})
+		  	.catch(function(error) {
+			  var errorCode = error.code;
+			  var errorMessage = error.message;
+			  console.log(error.code);		
+			  res.send(errorMessage);			
+	});
+
 	
 });
 
 //add idea to data base
+
+//routing for getting user
+	app.post('/getuser',function (req,res) {
+		var userId = req.body.token;
+		
+	res.send(userId);
+		
+});
+//routing for getting user
