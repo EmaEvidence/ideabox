@@ -197,3 +197,19 @@ app.post('/addidea/',function (req,res) {
 		
 });
 //routing for getting user
+
+//routing for getting ideas
+	app.post('/getideas',function (req,res) {
+		var db = admin.database();
+		var ref = db.ref("/ideas").orderByKey();
+	ref.on("value", function(snapshot) {
+  		console.log(snapshot.val());
+  		res.send(snapshot.val());
+	
+	}, function (errorObject) {
+  		console.log("The read failed: " + errorObject.code);
+  		//res.send("The read failed: " + errorObject.code);
+});
+		
+});
+//routing for getting ideas

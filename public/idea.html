@@ -36,6 +36,10 @@
 });
 
   </script>
+  <style>
+
+  
+  </style>
 </head>
 <body style="background-image:url(/images/bgimg.jpg); background-size:cover; background-repeat:no-repeat;">
 <div>
@@ -50,10 +54,17 @@
         
         
         
-        <div style="text-align:center;"><button id="opendialog" class="btn btn-success">Add an Idea</button>&nbsp;&nbsp;<a href="/logout" ><button class="btn btn-success">Log Out</button></a></div>
+        <div style="text-align:center;"><button class="btn btn-success">My Ideas</button>&nbsp;&nbsp;<button id="opendialog" class="btn btn-success">Add an Idea</button>&nbsp;&nbsp;<a href="/logout" ><button class="btn btn-success">Log Out</button></a></div>
         </div>
-        <div style="border:1px solid red; width:60%">
-        <h4> Ideas </h4>
+        <div style=" width:60%">
+        <h4> Ideas Board </h4>
+        <div id="displayIdeas">
+        
+        </div>
+        <div>
+        	<img src="images/tumblr_nak5muSmwi1r2geqjo1_500.gif" width="200px" height="200px" />
+        
+        </div>
 
         
         
@@ -142,17 +153,59 @@
 //getting ideas
 
  $.post('/getuser',{tok:i},function(res){
-        var b = {"9suWUcNGnXS4D4C3n5Pq9GU9EBo1":{"phone":"7063747160","username":"Emmanuel Alabi"}};
-        var pocRes = JSON.stringify(res);
-       // alert (i);
         var keey = Object.keys(res);
-        var datt = res[keey];
-        var phone = datt["phone"];
-        var name = datt["username"];
+        var userKey = res[keey];
+        var phone = userKey["phone"];
+        var name = userKey["username"];
         document.getElementById('userd').innerHTML = name;
 
       });
+	  function getIdeas(){
+$.post('/getideas',{},function(res){
+		var cont = "";
+		var objectKeys = Object.keys(res);
+		var objectLength = objectKeys.length;
+		for (a =0; a < objectLength; a++){
+			var b = objectKeys[a];
+			cont = res[b];
+			var title,date,upv,downv,desc,cat,downv,comm;
+			Object.keys(cont).forEach(function(key) {
+				if(key == "title"){
+					title = cont[key];					
+				}
+				else if(key == "date")
+				{
+					date = cont[key];	
+				}
+				else if(key == "upvote"){
+					upv = cont[key];
+				}
+				else if(key == "description"){
+					desc = cont[key];
+					}
+				else if(key == "category"){
+					cat = cont[key];
+					}
+				else if(key == "downvote"){
+					downv = cont[key];
+					}
+				else{
+					comm = "";	
+					}
+			});
+      var display = "<div class='jumbotron ideacont' style=''><h5 class='well ideatitle'>" +title+ "</h5><div class='well ideadesc'>"+desc+ "</div><div class='ideacomment'>"+comm+"</div><i><h6 class='ideadetails'>"+cat+ ", "+date+" by Author</h6></i><div><button class='ideauvote'>Upvotes"+ upv+ "</button><button class='ideadvote'>Downvotes"+ downv+ "</button></div><div class='ideacomment'>comments</div><div class='newcomment'><textarea id='addcomm'></textarea><br><button>Add Comment</button></div></div>";
+        document.getElementById('displayIdeas').innerHTML += display +"<br>";
+			
+				
+			  
+		}
+			      
+        
 
+      });
+	  }
+	  getIdeas();
+	  //setInterval("getIdeas",1000);
 </script>
 </body>
 </html>
