@@ -40,9 +40,14 @@ app.get('/passreset',function (req,res) {
 });
 
 app.get('/logout',function (req,res) {
-	firebase.auth().signOut();
-	res.sendFile(path.join(__dirname+'/public/signin.html'))	;
-});
+	firebase.auth().signOut()
+   .then(function() {
+      res.redirect('/signin');
+   }, function(error) {
+     
+   });
+    });
+	
 
 app.get('/idea',function (req,res) {
 	firebase.auth().onAuthStateChanged(function(user) {
@@ -72,7 +77,8 @@ app.post('/processsignup',function (req,res) {
 		    phone : phone
   		};
 		  	firebase.database().ref('user/'+userId ).set(data);
-		  	res.send(email);			
+		  	res.send(userData.uid);
+			
 
 	})
 	.catch(function(error) {
@@ -129,7 +135,8 @@ app.post('/addidea/',function (req,res) {
 	var title = req.body.title;
 	var category = req.body.category;
 	var description = req.body.description;
-	res.send( title + category + description);
+	var userToken = req.body.usertoken;
+	res.send( title + category + description + userToken);
 	
 });
 
