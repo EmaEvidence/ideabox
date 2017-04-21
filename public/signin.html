@@ -58,6 +58,10 @@
          $("#errbox").show();
 			   $("#err").html("Password or Email empty !!!");
 		  }
+        else if (r == "auth/network-request-failed"){
+              $("#errbox").show();
+              $("#err").html("Login Failed!!! You system is not connected to the internet");
+        }
           else{
               alert ("Login Successful");
               window.localStorage.setItem('userid', r);

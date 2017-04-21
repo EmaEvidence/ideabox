@@ -56,7 +56,7 @@
         <div style="text-align:center;"><button class="btn btn-success">My Ideas</button>&nbsp;&nbsp;<button id="opendialog" class="btn btn-success">Add an Idea</button>&nbsp;&nbsp;<a href="/logout" ><button class="btn btn-success">Log Out</button></a></div>
         </div>
         <div class="col-sm-7" style="width:60%">
-        <h4> Ideas Board </h4>
+        <h4> Idea Board </h4>
         <div id="displayIdeas">
         
         </div>
@@ -170,7 +170,14 @@ $.post('/getideas',{},function(res){
 		for (a =0; a < objectLength; a++){
 			var b = objectKeys[a];
 			cont = res[b];
-			var title,date,upv,downv,desc,cat,downv,comm;
+			var title ="";
+			var date = "";
+			var upv = 0;
+			var downv = 0;
+			var desc ="";
+			var cat = "";
+			var datacc = "";
+			var author ="";
 			Object.keys(cont).forEach(function(key) {
 				if(key == "title"){
 					title = cont[key];					
@@ -192,21 +199,26 @@ $.post('/getideas',{},function(res){
 					downv = cont[key];
 					}
 				else if(key == "comment"){
-					comm = cont[key];	
+						data = cont[key];
 					}
-				else {
+				else if (key == 'userid') {
 					var id = cont[key];
 					$.post('/ideaposter',{tok:id},function(res){
 					var keey = Object.keys(res);
 					var userKey = res[keey];
 					var phone = userKey["phone"];
-					var name = userKey["username"];					
+					name = userKey["username"];	
+					return name
+					//alert (name)
+					//alert (name)			;
 				  });
+				  //alert (name);
+				  //author = 1111;
 				}
 			});
-      var display = "<div class='ideacont' style=''><h3 class='ideatitle'>" +title+ "</h3><div class='well well-lg ideadesc'>"+desc+ "</div><i><h6 class='ideadetails'>"+cat+ ", "+date+" by "+ name  +"</h6></i><div><button class='btn-sm btn-success ideauvote' onclick='upvote("+v+","+upv+")' >Upvotes "+ upv+ "</button>&nbsp;<button class='btn-sm btn-warning ideadvote' onclick='downvote("+v+","+downv+")'id='dwv"+v+"'>Downvotes "+ downv+ "</button></div><div class='ideacomment'>"+comm+"</div><div class='newcomment'><textarea class='form-control' id='addcomm"+v+"'></textarea><br><button class='btn-sm btn-warning' onclick='addComment("+v+")' >Add Comment</button></div></div><input type='hidden' value='"+b+"' id='ideaid"+v+"'"+ b;
+      var display = "<div class='ideacont' style=''><h3 class='ideatitle'>" +title+ "</h3><div class='well well-lg ideadesc'>"+desc+ "</div><i><h6 class='ideadetails'>"+cat+ ", "+date+" by "+ name  +"</h6></i><div><button class='btn-sm btn-success ideauvote' onclick='upvote("+v+","+upv+")' >Upvotes "+ upv+ "</button>&nbsp;<button class='btn-sm btn-warning ideadvote' onclick='downvote("+v+","+downv+")'id='dwv"+v+"'>Downvotes "+ downv+ "</button></div><div class='ideacomment'>"+data+"</div><div class='newcomment'><textarea class='form-control' id='addcomm"+v+"'></textarea><br><button class='btn-sm btn-warning' onclick='addComment("+v+")' >Add Comment</button></div></div><input type='hidden' value='"+b+"' id='ideaid"+v+"'"+ b;
         document.getElementById('displayIdeas').innerHTML += display +"<br>";
-			
+			comm = " ";
 			v++;	
 			  
 		}

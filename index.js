@@ -157,9 +157,7 @@ app.post('/addidea/',function (req,res) {
 		    upvote: 0,
 		    downvote: 0,
 		    date: time,
-		    comment : {
-		    	userid:{ comment: " ", time: " ", commenter:" "}
-		    }
+		    comment : { }
   		};
 		  	//firebase.database().ref('user/'+userId ).set(data);
 		  	//var postsRef = firebase.database().ref.child("user/ideas");
