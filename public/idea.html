@@ -11,6 +11,7 @@
   <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.0/jquery.min.js"></script>
   <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
   <script src="/js/jquery-ui.js"></script>
+   <script src="js/markdown.js"></script>
   <script type="text/javascript">
   var i = window.localStorage.getItem('userid');
   $(document).ready(function() {
@@ -40,23 +41,23 @@
   
   </style>
 </head>
-<body style="background-image:url(/images/bgimg.jpg); background-size:contain; background-repeat:no-repeat;">
+<body style=" background-size:contain; background-repeat:no-repeat;">
 <div>
 <div class="heada"><h3>Ideabox<img src="/images/logo.gif" width="50px" height="50px" /></h3></div>
-	<div class="row" style="padding-left:5%; text-align: center;">
-
-    	<div class="col-sm-4" style=" border-radius:5px; box-shadow: 0 1px 1px 0 rgba(0, 0, 0, 0.2);  width:25%; margin-right:5%; height:270px; box-shadow:; padding: 5px; margin-top:5%;">
+	<div class="row" style="padding-left:5%;">
+		<div class="col-sm-2>"></div>
+    	<div class="col-sm-4" style=" border-radius:5px; box-shadow: 0 1px 1px 0 rgba(0, 0, 0, 0.2);  width:25%; margin-right:5%; height:270px; box-shadow:; padding: 5px; margin-top:5%; text-align:center;">
       <img src="images/bgimg.fw.png" width="100px" height="100px" style="border:1px solid green; border-radius:10px;"><br>
 	<i class="fa fa-pencil-square-o" aria-hidden="true"></i>
-      <p> Welcome <b id="userd"></b> to ideabox </p>
+      <p> Welcome <b id="userd"></b> </p>
         <h4> Profile </h4>
         
         
         
         <div style="text-align:center;"><button class="btn btn-success">My Ideas</button>&nbsp;&nbsp;<button id="opendialog" class="btn btn-success">Add an Idea</button>&nbsp;&nbsp;<a href="/logout" ><button class="btn btn-success">Log Out</button></a></div>
         </div>
-        <div class="col-sm-7" style="width:60%">
-        <h4> Idea Board </h4>
+        <div class="col-sm-4" style="width:50%">
+        <h2> Idea Board </h2>
         <div id="displayIdeas">
         
         </div>
@@ -170,36 +171,44 @@ $.post('/getideas',{},function(res){
 		for (a =0; a < objectLength; a++){
 			var b = objectKeys[a];
 			cont = res[b];
-			var title ="";
-			var date = "";
-			var upv = 0;
-			var downv = 0;
-			var desc ="";
-			var cat = "";
-			var datacc = "";
+			var title = cont.title;
+			var date = cont.date;
+			var upv = cont.upvote;
+			var downv = cont.downvote;
+			var desc =cont.description;
+		  	var desc = markDown(desc);
+		  	alert (desc);
+			var cat = cont.category;
+			var dataToDisplay = "";
 			var author ="";
 			Object.keys(cont).forEach(function(key) {
-				if(key == "title"){
-					title = cont[key];					
-				}
-				else if(key == "date")
-				{
-					date = cont[key];	
-				}
-				else if(key == "upvote"){
-					upv = cont[key];
-				}
-				else if(key == "description"){
-					desc = cont[key];
-					}
-				else if(key == "category"){
-					cat = cont[key];
-					}
-				else if(key == "downvote"){
-					downv = cont[key];
-					}
-				else if(key == "comment"){
+				
+					if(key == "comment"){
 						data = cont[key];
+						dataKey = Object.keys(data);
+						dataKeyLength = dataKey.length;
+						if (dataKeyLength <=1){
+							//console.log(data);
+							var singleKey = Object.keys(data);
+							//console.log(singleKey);
+							console.log(data[singleKey]);
+							var splitedData = data[singleKey];
+							//dataToDisplay = "Single";	
+							dataToDisplay = "<h4 class='commentbody'>" + splitedData.comment; + "</h4><h5>"+ splitedData.commenter; +",<br/> "+splitedData.time;  +"</5></br>";
+						}
+						else {
+							for(commentId in data){
+								var splitedData = data[commentId];
+								var comment = splitedData.comment;
+								var commenter = splitedData.commenter;
+								var commentTime = splitedData.time; 
+								
+									
+									dataToDisplay += "<h4 class='commentbody'>" + comment + "</h4><h5>"+ commenter +",<br/> "+commentTime +"</5></br>";
+								
+								
+						}
+						}
 					}
 				else if (key == 'userid') {
 					var id = cont[key];
@@ -209,14 +218,11 @@ $.post('/getideas',{},function(res){
 					var phone = userKey["phone"];
 					name = userKey["username"];	
 					return name
-					//alert (name)
-					//alert (name)			;
+							;
 				  });
-				  //alert (name);
-				  //author = 1111;
 				}
 			});
-      var display = "<div class='ideacont' style=''><h3 class='ideatitle'>" +title+ "</h3><div class='well well-lg ideadesc'>"+desc+ "</div><i><h6 class='ideadetails'>"+cat+ ", "+date+" by "+ name  +"</h6></i><div><button class='btn-sm btn-success ideauvote' onclick='upvote("+v+","+upv+")' >Upvotes "+ upv+ "</button>&nbsp;<button class='btn-sm btn-warning ideadvote' onclick='downvote("+v+","+downv+")'id='dwv"+v+"'>Downvotes "+ downv+ "</button></div><div class='ideacomment'>"+data+"</div><div class='newcomment'><textarea class='form-control' id='addcomm"+v+"'></textarea><br><button class='btn-sm btn-warning' onclick='addComment("+v+")' >Add Comment</button></div></div><input type='hidden' value='"+b+"' id='ideaid"+v+"'"+ b;
+      var display = "<div class='ideacont' style=''><h3 class='ideatitle'>" +title+ "</h3><div class='well well-sm ideadesc'>"+desc+ "</div><h5 class='ideadetails'>"+" by "+ name +"<br> category: "+cat+ ", </br> at: "+date +"</h5><div><button class='btn-sm btn-success ideauvote' onclick='upvote("+v+","+upv+")' >Upvotes "+ upv+ "</button>&nbsp;<button class='btn-sm btn-warning ideadvote' onclick='downvote("+v+","+downv+")'id='dwv"+v+"'>Downvotes "+ downv+ "</button></div><div class='ideacomment'> <h4 class='commenttitle'>Comments:</h4>"+dataToDisplay+"</div><div class='newcomment'><textarea class='form-control' id='addcomm"+v+"'></textarea><br><button class='btn-sm btn-warning' onclick='addComment("+v+")' >Add Comment</button></div></div><input type='hidden' value='"+b+"' id='ideaid"+v+"'"+ b;
         document.getElementById('displayIdeas').innerHTML += display +"<br>";
 			comm = " ";
 			v++;	
@@ -242,25 +248,37 @@ $.post('/getideas',{},function(res){
 	  function downvote(a,b){
 		 var ideaId = $("#ideaid"+a).val();
 		 b +=1
-	  $.post('/vote',{v:'down',ideaId:ideaId,vote:b},function(r){
-		  alert(r);
-		   window.location = '/idea'; 
+	  	 $.post('/vote',{v:'down',ideaId:ideaId,vote:b},function(r){
+		 //alert(r);
+		 window.location = '/idea'; 
 		  
 	  });
 	  };
 //function to add Comment
  function addComment(v){
+	 
 	 var comment = $("#addcomm"+v).val();
+	 if (comment == ""){
+		alert ("Please Fill your comment") ;
+	 }
+	 else{
 	 var ideaId = $("#ideaid"+v).val();
+	 var commenter = document.getElementById('userd').innerHTML;
 	 var date = new Date();
-	 $.post('/addcomment',{comment:comment,ideaId:ideaId,date:date},function(res){
+	 $.post('/addcomment',{comment:comment,ideaId:ideaId,date:date,commenter:commenter},function(res){
 		 alert (res);
 		 window.location='/idea';
 		 
 	 });
 	 
-	 
+	 }
  }
+ function markDown(txt){
+  var markedWord =  markdown.toHTML(txt);
+  return markedWord;
+}
+var ema = markDown('**ema**');
+alert (ema);
 </script>
 </body>
 </html>
