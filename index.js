@@ -186,7 +186,7 @@ app.post('/addidea/',function (req,res) {
 		//console.log(userIdd);
 		var db = admin.database();
 		var ref = db.ref("/user").orderByKey().equalTo(userIdd);;
-	ref.once("value", function(snapshot) {
+	ref.on("value", function(snapshot) {
   		console.log(snapshot.val());
   		res.send(snapshot.val());
 	
@@ -251,3 +251,20 @@ app.post('/vote',function (req,res) {
 });
 
 //routing for votes
+//routing for getting idea poster
+	app.post('/ideaposter',function (req,res) {
+		var userIdd = req.body.tok;
+		//console.log(userIdd);
+		var db = admin.database();
+		var ref = db.ref("/user").orderByKey().equalTo(userIdd);;
+	ref.on("value", function(snapshot) {
+  		console.log(snapshot.val());
+  		res.send(snapshot.val());
+	
+	}, function (errorObject) {
+  		console.log("The read failed: " + errorObject.code);
+  		res.send("The read failed: " + errorObject.code);
+});
+		
+});
+//routing for getting user idea poster
