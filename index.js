@@ -7,6 +7,7 @@ var markdown = require('markdown').markdown;
 var admin = require("firebase-admin");
 var bodyParser = require('body-parser');
 var admin = require("firebase-admin");
+var markdown = require( "markdown" ).markdown;
 
 var serviceAccount = require("sdk/serviceAccountKey.json");
 
@@ -54,8 +55,6 @@ app.get('/logout',function (req,res) {
 	firebase.auth().signOut()
    .then(function() {
       res.redirect('/signin');
-   }, function(error) {
-     
    });
     });
 	
@@ -255,28 +254,27 @@ app.post('/vote',function (req,res) {
 		//console.log(userIdd);
 		var db = admin.database();
 		var ref = db.ref("/user").orderByKey().equalTo(userIdd);;
-	ref.on("value", function(snapshot) {
+		ref.on("value", function(snapshot) {
   		console.log(snapshot.val());
   		res.send(snapshot.val());
 	
 	}, function (errorObject) {
   		console.log("The read failed: " + errorObject.code);
   		res.send("The read failed: " + errorObject.code);
-});
+	});
 		
 });
 //routing for getting user idea poster
 
 //routing for adding comments to ideas
 app.post('/addcomment',function (req,res) {
-		var user = firebase.auth().currentUser;
-		var userToken = user.uid;
+		var commenter = req.body.commenter;
 		var comment = req.body.comment;
 		var date = req.body.date;
 		var ideaId = req.body.ideaId;
 		var data = 
 			{		
-		    	comment: comment, time: date, commenter:userToken
+		    	comment: comment, time: date, commenter:commenter
 		    } 
 		firebase.database().ref('ideas/'+ideaId+'/comment').push().set(data)
 		.then(userData => { 
@@ -290,3 +288,11 @@ app.post('/addcomment',function (req,res) {
 });
 
 //routing for getting comments to ideas
+
+//routing for markDown
+app.post('/markdown',function (req,res) {
+		var word = req.body.txt;
+		res.send(word);
+});
+
+//routing for markDown

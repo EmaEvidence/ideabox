@@ -21,6 +21,10 @@ h4 a { color:#090; font-weight:200;}
 			opacity:0.7; }
 .ideacont:hover { opacity:1;}
 .ideatitle { border:1px #0F6;}
+.commenttitle { text-decoration:underline;}
+.commentbody { background-color:#CCC;
+				border-radius:2px;}
+.ideadesc { font-size:18px;}
 
 
 
