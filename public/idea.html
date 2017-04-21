@@ -111,6 +111,7 @@
         $.post('/addidea/',{title:title,category:category,description:description,usertoken:userToken, time:time}, function(r){
 			
           alert(r);
+		  window.location ='/idea';
           
         });
 		
@@ -203,7 +204,7 @@ $.post('/getideas',{},function(res){
 				  });
 				}
 			});
-      var display = "<div class='ideacont' style=''><h3 class='ideatitle'>" +title+ "</h3><div class='well well-lg ideadesc'>"+desc+ "</div><i><h6 class='ideadetails'>"+cat+ ", "+date+" by "+ name  +"</h6></i><div><button class='btn-sm btn-success ideauvote' onclick='upvote("+v+","+upv+")' >Upvotes "+ upv+ "</button>&nbsp;<button class='btn-sm btn-warning ideadvote' onclick='downvote("+v+","+downv+")'id='dwv"+v+"'>Downvotes "+ downv+ "</button></div><div class='ideacomment'>"+comm+"</div><div class='newcomment'><textarea class='form-control' id='addcomm'></textarea><br><button class='btn-sm btn-warning'>Add Comment</button></div></div><input type='hidden' value='"+b+"' id='ideaid"+v+"'"+ b;
+      var display = "<div class='ideacont' style=''><h3 class='ideatitle'>" +title+ "</h3><div class='well well-lg ideadesc'>"+desc+ "</div><i><h6 class='ideadetails'>"+cat+ ", "+date+" by "+ name  +"</h6></i><div><button class='btn-sm btn-success ideauvote' onclick='upvote("+v+","+upv+")' >Upvotes "+ upv+ "</button>&nbsp;<button class='btn-sm btn-warning ideadvote' onclick='downvote("+v+","+downv+")'id='dwv"+v+"'>Downvotes "+ downv+ "</button></div><div class='ideacomment'>"+comm+"</div><div class='newcomment'><textarea class='form-control' id='addcomm"+v+"'></textarea><br><button class='btn-sm btn-warning' onclick='addComment("+v+")' >Add Comment</button></div></div><input type='hidden' value='"+b+"' id='ideaid"+v+"'"+ b;
         document.getElementById('displayIdeas').innerHTML += display +"<br>";
 			
 			v++;	
@@ -235,6 +236,19 @@ $.post('/getideas',{},function(res){
 		  
 	  });
 	  };
+//function to add Comment
+ function addComment(v){
+	 var comment = $("#addcomm"+v).val();
+	 var ideaId = $("#ideaid"+v).val();
+	 var date = new Date();
+	 $.post('/addcomment',{comment:comment,ideaId:ideaId,date:date},function(res){
+		 alert (res);
+		 window.location='/idea';
+		 
+	 });
+	 
+	 
+ }
 </script>
 </body>
 </html>
