@@ -1,0 +1,25 @@
+{
+  "name": "bc21-ideabox",
+  "version": "1.0.0",
+  "engines": {
+    "node": "6.9.4"
+  },
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "start": "node index.js"
+  },
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "body-parser": "^1.17.1",
+    "express": "^4.15.2",
+    "firebase": "^3.7.8",
+    "firebase-admin": "^4.2.1",
+    "fs": "0.0.1-security",
+    "markdown": "^0.5.0",
+    "nodemon": "^1.11.0",
+    "path": "^0.12.7",
+    "pug": "^2.0.0-beta.12"
+  }
+}
