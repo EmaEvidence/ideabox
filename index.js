@@ -64,7 +64,6 @@
     				res.sendFile(path.join(__dirname+'/public/signin.html'))	;
   				}
 			});
-	
 		});
 
 //routng for gets
@@ -84,8 +83,6 @@
   							};
 		  	firebase.database().ref('user/'+userId ).set(data);
 		  		res.send(userData.uid);
-			
-
 			})
 			.catch(function(error) {
 		  		let errorCode = error.code;
@@ -93,7 +90,6 @@
 		  		console.log(error.code);
 		  		res.send(errorMessage);			
 			});
-		
 		});
 
 
@@ -103,13 +99,11 @@
 			firebase.auth().signInWithEmailAndPassword(email, password) 
 			.then(userData => { 
 		 	res.send(userData.uid);
-
 			})
 			.catch(function(error) {
 		  	let errorCode = error.code;
 		  	let errorMessage = error.message;
 		  	res.send(errorCode);
-		  
 			});
 		});
 
@@ -126,7 +120,6 @@
 		  		res.send(errorCode);
 		  
 			});
-	
 		});
 
 //routng for posts
@@ -175,7 +168,6 @@
   					console.log("The read failed: " + errorObject.code);
   					res.send("The read failed: " + errorObject.code);
 			});
-		
 		});
 //routing for getting user
 
@@ -218,7 +210,6 @@
 				res.send("voted");
 			})
 			}
-		
 		});
 
 //routing for votes
