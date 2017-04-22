@@ -51,8 +51,14 @@
 
 
 		app.get('/logout',function (req,res) {
-			firebase.auth().signOut();
-      		res.sendFile(path.join(__dirname+'/public/signin.html'))	;
+			//firebase.auth().signOut();
+      		//res.sendFile(path.join(__dirname+'/public/signin.html'))	;
+      		firebase.auth().signOut().then(function() {
+			  console.log('Signed Out');
+			  res.sendFile(path.join(__dirname+'/public/signin.html'))	;
+			}, function(error) {
+			  console.error('Sign Out Error', error);
+			});
     	});
 	
 

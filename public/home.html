@@ -52,36 +52,36 @@
 	<h6> &copy; 2017 EmaEvidence </h6>
 </div>
 <script type="text/javascript">
-$("#cpass").blur(function(){
-   const cpass = $("#cpass").val();
-   const pass = $("#pass").val();
-   const mail = $("#email").val();
-   if (cpass == pass){
+  $("#cpass").blur(function() {
+    const cpass = $("#cpass").val();
+    const pass = $("#pass").val();
+    const mail = $("#email").val();
+    if (cpass == pass) {
       $("#subbtn").removeAttr("disabled");
-	  $("#span").html("Password Matches");
-   }
-   else {
+	    $("#span").html("Password Matches");
+    }
+    else {
       $("#span").html("Password Mismatch");
-   }
-});
+    }
+  });
 
 
-$("#subbtn").click(function(e){
+  $("#subbtn").click(function(e) {
     event.preventDefault(e);
-	var email = $("#email").val();
+	  var email = $("#email").val();
     var password = $("#pass").val();
-	var name = $("#name").val();
+	  var name = $("#name").val();
     var phone = $("#phone").val();
-	 $.post('/processsignup/',{email:email,password:password,name:name,phone:phone}, function(r){
-    if (r == email){
+	  $.post('/processsignup/',{email:email,password:password,name:name,phone:phone}, function(r){
+      if (r == email) {
       alert ("Registration Successful.")
       window.location = 'idea';  
-    }
-    else{
+      }
+      else {
       alert (r);
-    }
+      }
 	 });  
-}); 
+  }); 
 
 
 </script>
