@@ -5,7 +5,7 @@
 		var fs = require('fs');
 		var bodyParser = require('body-parser');
 		var markdown = require( "markdown" ).markdown;
-		var serviceAccount = require("sdk/serviceAccountKey.json");
+		//var serviceAccount = require("sdk/serviceAccountKey.json");
 
 
 		var config = {
